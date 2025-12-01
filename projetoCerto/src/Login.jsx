@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import quiz from "../assets/quiz.png";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  function cadastro() {
+    navigate("/cadastro");
+  }
 
   return (
     <div className="font-display bg-background-light dark:bg-background-dark">
@@ -22,8 +28,7 @@ export default function Login() {
               </div>
 
               <div className="relative z-20 flex items-center gap-3 text-lg font-medium">
-                
-                <span class="w-full md:w-1/6 lg:w-1/6 h-auto" ><img
+                <span className="w-full md:w-1/6 lg:w-1/6 h-auto" ><img
                   src="../assets/quiz.png"
                   alt="Quiz UTFPR"
                 /></span>
@@ -55,7 +60,7 @@ export default function Login() {
                     {/* EMAIL */}
                     <label className="flex flex-col flex-1">
                       <p className="text-base font-medium pb-2 text-zinc-900 dark:text-white">
-                        Email 
+                        Email
                       </p>
                       <input
                         className="form-input w-full rounded-lg border border-zinc-300 bg-transparent px-4 py-3 
@@ -103,8 +108,9 @@ export default function Login() {
 
                   {/* BUTTONS */}
                   <div className="flex flex-col gap-4">
-                    <button className="h-12 w-full rounded-lg bg-primary text-black font-bold hover:bg-primary/90 
-                    focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border 
+                    border-zinc-300 px-5 font-bold hover:bg-zinc-100 dark:border-zinc-700 dark:text-white 
+                    dark:hover:bg-zinc-800">
                       Entrar
                     </button>
 
@@ -136,9 +142,7 @@ export default function Login() {
 
                 <p className="px-8 text-center text-sm text-zinc-600 dark:text-zinc-400">
                   Não tem uma conta?{" "}
-                  <a className="font-medium underline hover:text-primary" href="#">
-                    Cadastre-se
-                  </a>
+                  <button onClick={cadastro} className="font-medium underline hover:text-primary" >Cadastre-se</button>
                 </p>
               </div>
             </div>
