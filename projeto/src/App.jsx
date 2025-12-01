@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import quiz from "../assets/quiz.png";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,23 +15,18 @@ export default function Login() {
               <div className="absolute inset-0">
                 <img
                   className="h-full w-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9a0fesd_HBK6D2PzBcmRuFmRmE-txrFAv8HAhh7LhDPE5dJwKjTcReGewqZohRlwsWeBtW_TanE3KVAHhy-W3NU-QZ_0ILNxutP6deyK0aFnbJ-f2J7yQkqLJ7WN1gDqa84GtZ2gUy71DjbKFzPfach9M4w5PSV4edoC83mmsKi8fqnDBa1YlWC6mrHz5Yh5tLohHWNp0TTwO8pdxrrnQ5fpMXxXKRt6pVppj2OQ7qdBkdryzJ1JUwBLWhljAwde-9nINsOi6M-qu"
+                  src="../"
                   alt=""
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20" />
               </div>
 
               <div className="relative z-20 flex items-center gap-3 text-lg font-medium">
-                <svg
-                  className="h-8 w-8 text-primary"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-4.794a.75.75 0 00-1.06 1.06L12.94 12l-3.094 3.094a.75.75 0 101.06 1.061l3.625-3.625a.75.75 0 000-1.06l-3.625-3.625z"
-                  />
-                </svg>
-                <span className="font-bold">Quiz da Gincana da UTFPR</span>
+                
+                <span class="w-full md:w-1/6 lg:w-1/6 h-auto" ><img
+                  src="../assets/quiz.png"
+                  alt="Quiz UTFPR"
+                /></span>
               </div>
 
               <div className="relative z-20 mt-auto">
@@ -49,7 +45,7 @@ export default function Login() {
                     Acesse sua conta
                   </h1>
                   <p className="text-base text-zinc-600 dark:text-zinc-400">
-                    Bem-vindo ao Quiz da Gincana da UTFPR.
+                    Bem-vindo ao Quiz UTFPR.
                   </p>
                 </div>
 
@@ -59,14 +55,14 @@ export default function Login() {
                     {/* EMAIL */}
                     <label className="flex flex-col flex-1">
                       <p className="text-base font-medium pb-2 text-zinc-900 dark:text-white">
-                        Email Institucional
+                        Email 
                       </p>
                       <input
                         className="form-input w-full rounded-lg border border-zinc-300 bg-transparent px-4 py-3 
                         text-zinc-900 placeholder:text-zinc-400 
                         focus:border-primary focus:outline-none focus:ring-2 
                         focus:ring-primary/20 dark:border-zinc-700 dark:text-white"
-                        placeholder="seuemail@alunos.utfpr.edu.br"
+                        placeholder="Digite seu email"
                       />
                     </label>
 
@@ -107,7 +103,7 @@ export default function Login() {
 
                   {/* BUTTONS */}
                   <div className="flex flex-col gap-4">
-                    <button className="h-12 w-full rounded-lg bg-primary text-white font-bold hover:bg-primary/90 
+                    <button className="h-12 w-full rounded-lg bg-primary text-black font-bold hover:bg-primary/90 
                     focus:outline-none focus:ring-2 focus:ring-primary">
                       Entrar
                     </button>
