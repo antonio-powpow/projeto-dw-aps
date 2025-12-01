@@ -15,7 +15,7 @@ export default function Login() {
               <div className="absolute inset-0">
                 <img
                   className="h-full w-full object-cover"
-                  src="../"
+                  src="../assets/utf.jpg"
                   alt=""
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20" />
