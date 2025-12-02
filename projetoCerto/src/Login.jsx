@@ -21,15 +21,15 @@ export default function Login() {
               <div className="absolute inset-0">
                 <img
                   className="h-full w-full object-cover"
-                  src="../assets/utf.jpg"
-                  alt=""
+                  src="../public/utf.jpg"
+                  alt="utfpr"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20" />
               </div>
 
               <div className="relative z-20 flex items-center gap-3 text-lg font-medium">
                 <span className="w-full md:w-1/6 lg:w-1/6 h-auto" ><img
-                  src="../assets/quiz.png"
+                  src="../public/quiz.png"
                   alt="Quiz UTFPR"
                 /></span>
               </div>
