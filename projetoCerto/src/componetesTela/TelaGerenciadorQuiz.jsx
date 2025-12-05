@@ -62,8 +62,8 @@ const TelaGerenciadorQuiz = () => {
       case 'config':
         return <Configuracoes />;
       
-      default:
-        return <GestaoQuizzes />;
+      
+        
     }
   };
 
