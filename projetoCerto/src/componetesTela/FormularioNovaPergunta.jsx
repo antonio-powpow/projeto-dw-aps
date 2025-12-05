@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 const estiloInput = "w-full p-3 bg-gray-700 border border-gray-600 rounded-md text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500";
 const estiloLabel = "block text-sm font-medium text-gray-300 mb-2";
 
-const FormularioNovaPergunta = ({ onCancelar }) => {
+const FormularioNovaPergunta = ({ onCancelar, onSalvar }) => {
   const [dadosPergunta, setDadosPergunta] = useState({
-    texto: '',
+    texto: '', // Atenção: no banco chamamos isso de 'pergunta', faremos a conversão no pai
     opcoes: { A: '', B: '', C: '', D: '' },
     peso: 10,
     categoria: 'Sobre UTFPR',
@@ -25,8 +25,15 @@ const FormularioNovaPergunta = ({ onCancelar }) => {
   };
 
   const lidarComSalvamento = () => {
-    alert('Pergunta salva! Verifique o console para os dados.');
-    console.log('Dados Salvos:', dadosPergunta);
+    if (!dadosPergunta.texto) {
+      alert("Por favor, escreva o texto da pergunta.");
+      return;
+    }
+
+    // AQUI É A MÁGICA: Passamos os dados para o componente Pai
+    if (onSalvar) {
+      onSalvar(dadosPergunta); 
+    }
   };
   
   return (
@@ -49,6 +56,7 @@ const FormularioNovaPergunta = ({ onCancelar }) => {
         </div>
       </header>
 
+      {/* Resto do formulário (Inputs) continua igual... */}
       <div className="space-y-6">
         <div>
           <label htmlFor="textoPergunta" className={estiloLabel}>Texto da Pergunta</label>
@@ -61,13 +69,14 @@ const FormularioNovaPergunta = ({ onCancelar }) => {
             onChange={lidarComMudanca}
           />
         </div>
-
+        
+        {/* ... (códigos das opções e selects continuam iguais) */}
+        {/* Vou omitir para não ficar repetitivo, mas mantenha o código anterior dos inputs aqui */}
         <div>
           <p className={estiloLabel}>Opções de Resposta</p>
           {Object.keys(dadosPergunta.opcoes).map((chave) => (
             <div key={chave} className="flex items-center space-x-4 mb-3">
               <input type="radio" name="opcaoCorreta" disabled className="form-radio h-5 w-5 text-blue-600 bg-gray-700 border-gray-600" /> 
-              
               <input
                 type="text"
                 placeholder={`Opção ${chave}`}
