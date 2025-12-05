@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // perguntas genéricas
@@ -17,12 +17,7 @@ const perguntas = [
   {
     categoria: "filantropicas",
     pergunta: "Uma campanha de arrecadação de alimentos é exemplo de qual tipo de ação?",
-    opcoes: [
-      "Recreativa",
-      "Esportiva",
-      "Filantrópica",
-      "Cultural",
-    ],
+    opcoes: ["Recreativa", "Esportiva", "Filantrópica", "Cultural"],
     respostaCorreta: 2,
   },
   {
@@ -83,15 +78,9 @@ const perguntas = [
   {
     categoria: "culturais",
     pergunta: "Um sarau com música e poesia é classificado como atividade:",
-    opcoes: [
-      "Filantrópica",
-      "Recreativa",
-      "Esportiva",
-      "Cultural",
-    ],
+    opcoes: ["Filantrópica", "Recreativa", "Esportiva", "Cultural"],
     respostaCorreta: 3,
   },
-  // mais algumas para garantir 10 por categoria de forma genérica
   {
     categoria: "recreativas",
     pergunta: "Qual destas opções é uma dinâmica recreativa simples?",
@@ -128,12 +117,7 @@ const perguntas = [
   {
     categoria: "culturais",
     pergunta: "Um concurso de paródias musicais se encaixa melhor em qual categoria?",
-    opcoes: [
-      "Cultural",
-      "Esportiva",
-      "Filantrópica",
-      "Recreativa",
-    ],
+    opcoes: ["Cultural", "Esportiva", "Filantrópica", "Recreativa"],
     respostaCorreta: 0,
   },
 ];
@@ -141,26 +125,39 @@ const perguntas = [
 export default function Categoria() {
   const [selected, setSelected] = useState(null);
   const [perguntasSelecionadas, setPerguntasSelecionadas] = useState([]);
+  const [animating, setAnimating] = useState(false);
   const navigate = useNavigate();
 
   function sortearPerguntasPorCategoria(categoria) {
     const filtradas = perguntas.filter((p) => p.categoria === categoria);
-    // embaralha e pega 10 (ou menos, se não houver 10)
     const embaralhadas = [...filtradas].sort(() => Math.random() - 0.5);
     return embaralhadas.slice(0, 10);
   }
 
-  function pergunta() {
-  if (!selected) return;
+  function handleSelecionar(categoria) {
+    if (animating) return; // evita duplo clique
 
-  const selecionadas = sortearPerguntasPorCategoria(selected);
-  setPerguntasSelecionadas(selecionadas);
+    setSelected(categoria);
 
-  console.log("Perguntas sorteadas:", selecionadas);
+    const selecionadas = sortearPerguntasPorCategoria(categoria);
+    setPerguntasSelecionadas(selecionadas);
+    console.log("Perguntas sorteadas:", selecionadas);
 
-  navigate("/pergunta", { state: { perguntas: selecionadas, categoria: selected } });
-}
+    setAnimating(true); // dispara animação
+  }
 
+  // depois da animação, navega para /pergunta
+  useEffect(() => {
+    if (!animating || !selected || !perguntasSelecionadas.length) return;
+
+    const timer = setTimeout(() => {
+      navigate("/pergunta", {
+        state: { perguntas: perguntasSelecionadas, categoria: selected },
+      });
+    }, 400); // tempo da animação
+
+    return () => clearTimeout(timer);
+  }, [animating, selected, perguntasSelecionadas, navigate]);
 
   function login() {
     navigate("/");
@@ -171,14 +168,19 @@ export default function Categoria() {
   }
 
   const baseCard =
-    "flex flex-1 flex-col gap-4 rounded-lg border p-6 transition-all cursor-pointer bg-white/5 dark:bg-gray-800/40 backdrop-blur-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 dark:focus-within:ring-offset-background-dark";
+    "flex flex-1 flex-col gap-4 rounded-lg border p-6 transition-all cursor-pointer bg-white/5 dark:bg-gray-800/40 backdrop-blur-sm";
   const normalBorder =
-    "border-white/5 hover:border-primary/50 hover:shadow-lg";
-  const selectedBorder = "border-primary shadow-lg ring-2 ring-primary/60";
+    "border-white/5 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1";
+  const selectedBorder =
+    "border-primary shadow-lg ring-2 ring-primary/60 scale-[1.03]";
+
+  const containerAnim = animating
+    ? "scale-95 opacity-0"
+    : "scale-100 opacity-100";
 
   return (
     <div className="min-h-screen w-full bg-[#020617] font-display text-white">
-      <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
+      <div className="relative flex min-h-screen w-full flex-col items-center overflow-hidden p-4 sm:p-6 md:p-8">
         {/* FUNDO COM GLOW */}
         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#020617] to-[#020617]">
           <div className="absolute inset-x-0 top-40 mx-auto h-[420px] w-[720px] rounded-[999px] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.35),_transparent_60%)] opacity-70 blur-3xl" />
@@ -187,7 +189,10 @@ export default function Categoria() {
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div onClick={login} className="size-14 text-primary cursor-pointer">
+              <div
+                onClick={login}
+                className="size-14 text-primary cursor-pointer"
+              >
                 <span className="w-full md:w-1/4 lg:w-1/4 h-auto">
                   <img
                     src="/quiz.png"
@@ -215,7 +220,9 @@ export default function Categoria() {
         </div>
 
         <main className="flex flex-1 flex-col items-center justify-center w-full max-w-5xl py-12 sm:py-16 md:py-20">
-          <div className="flex flex-col items-center gap-10 w-full">
+          <div
+            className={`flex flex-col items-center gap-10 w-full transform transition-all duration-300 ease-out ${containerAnim}`}
+          >
             <div className="flex flex-col items-center gap-2">
               <h1 className="tracking-tight text-4xl sm:text-5xl font-bold leading-tight text-center">
                 Escolha uma categoria
@@ -230,7 +237,7 @@ export default function Categoria() {
               {/* Filantrópicas */}
               <button
                 type="button"
-                onClick={() => setSelected("filantropicas")}
+                onClick={() => handleSelecionar("filantropicas")}
                 className={`${baseCard} ${
                   selected === "filantropicas" ? selectedBorder : normalBorder
                 }`}
@@ -253,7 +260,7 @@ export default function Categoria() {
               {/* Recreativas */}
               <button
                 type="button"
-                onClick={() => setSelected("recreativas")}
+                onClick={() => handleSelecionar("recreativas")}
                 className={`${baseCard} ${
                   selected === "recreativas" ? selectedBorder : normalBorder
                 }`}
@@ -276,7 +283,7 @@ export default function Categoria() {
               {/* Esportivas */}
               <button
                 type="button"
-                onClick={() => setSelected("esportivas")}
+                onClick={() => handleSelecionar("esportivas")}
                 className={`${baseCard} ${
                   selected === "esportivas" ? selectedBorder : normalBorder
                 }`}
@@ -299,7 +306,7 @@ export default function Categoria() {
               {/* Culturais */}
               <button
                 type="button"
-                onClick={() => setSelected("culturais")}
+                onClick={() => handleSelecionar("culturais")}
                 className={`${baseCard} ${
                   selected === "culturais" ? selectedBorder : normalBorder
                 }`}
@@ -317,16 +324,6 @@ export default function Categoria() {
                     Atividades culturais
                   </p>
                 </div>
-              </button>
-            </div>
-
-            <div className="flex justify-center px-4 py-3">
-              <button
-                onClick={pergunta}
-                disabled={!selected}
-                className="flex min-w-[84px] max-w-[480px] w-56 cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] transition-all hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#020617]"
-              >
-                <span className="truncate">Iniciar quiz</span>
               </button>
             </div>
           </div>

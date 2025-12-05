@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Perguntas() {
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ export default function Perguntas() {
   const [respondida, setRespondida] = useState(false);
   const [acertos, setAcertos] = useState(0);
   const [respostasJogador, setRespostasJogador] = useState([]);
+  const [animating, setAnimating] = useState(false); // animação entre perguntas
 
   const perguntaAtual = perguntas[indiceAtual];
 
@@ -54,25 +55,47 @@ export default function Perguntas() {
     }
   }
 
-  function proximaOuResultado() {
+  function irParaResultado() {
+    const desempenho = {
+      categoria,
+      totalPerguntas: perguntas.length,
+      acertos,
+      erros: perguntas.length - acertos,
+      respostas: respostasJogador,
+    };
+
+    navigate("/resultado", { state: { desempenho } });
+  }
+
+  function proximaPergunta() {
     const ultima = indiceAtual === perguntas.length - 1;
 
     if (ultima) {
-      const desempenho = {
-        categoria,
-        totalPerguntas: perguntas.length,
-        acertos,
-        erros: perguntas.length - acertos,
-        respostas: respostasJogador,
-      };
-
-      navigate("/resultado", { state: { desempenho } });
+      irParaResultado();
     } else {
       setIndiceAtual((prev) => prev + 1);
       setIndiceSelecionado(null);
       setRespondida(false);
     }
   }
+
+  // fluxo automático: responde → espera correção → animação de saída/entrada
+  useEffect(() => {
+    if (!respondida) return;
+
+    const timerCorrigir = setTimeout(() => {
+      setAnimating(true);
+
+      const timerAnim = setTimeout(() => {
+        setAnimating(false);
+        proximaPergunta();
+      }, 300);
+
+      return () => clearTimeout(timerAnim);
+    }, 500);
+
+    return () => clearTimeout(timerCorrigir);
+  }, [respondida]);
 
   function getClassesOpcao(indexOpcao) {
     const base =
@@ -144,9 +167,13 @@ export default function Perguntas() {
     navigate("/usuario");
   }
 
+  const cardAnimClass = animating
+    ? "opacity-0 translate-y-3"
+    : "opacity-100 translate-y-0";
+
   return (
     <div className="min-h-screen w-full bg-[#020617] font-display text-white">
-      <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
+      <div className="relative flex min-h-screen w-full flex-col items-center overflow-hidden p-4 sm:p-6 md:p-8">
         {/* FUNDO COM GLOW */}
         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#020617] to-[#020617]">
           <div className="absolute inset-x-0 top-40 mx-auto h-[420px] w-[720px] rounded-[999px] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.35),_transparent_60%)] opacity-70 blur-3xl" />
@@ -185,8 +212,11 @@ export default function Perguntas() {
           </header>
         </div>
 
-        <main className="flex flex-1 flex-col items-center justify-center w-full max-w-5xl py-12 sm:py-16 md:py-20">
-          <div className="flex flex-col items-center gap-10 w-full max-w-2xl">
+        {/* Conteúdo central sem scroll */}
+        <main className="flex flex-1 flex-col items-center justify-center w-full max-w-5xl">
+          <div
+            className={`flex flex-col items-center gap-8 w-full max-w-2xl transform transition-all duration-300 ease-out ${cardAnimClass}`}
+          >
             {/* Texto superior */}
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="rounded-full bg-primary/20 px-4 py-1.5">
@@ -205,39 +235,32 @@ export default function Perguntas() {
             </div>
 
             {/* Alternativas */}
-            <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 p-4">
-              {perguntaAtual.opcoes.slice(0, 4).map((opcao, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => handleResposta(index)}
-                  className={getClassesOpcao(index)}
-                  disabled={respondida}
-                >
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-gray-500 bg-gray-900/60 text-sm font-bold text-gray-100">
-                    {letraOpcao(index)}
-                  </div>
-                  <span className="flex-1 text-gray-100 font-medium">
-                    {opcao}
-                  </span>
-                  {getIcone(index)}
-                </button>
-              ))}
-            </div>
+            <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+              {perguntaAtual.opcoes.slice(0, 4).map((opcao, index) => {
+                const correta = index === perguntaAtual.respostaCorreta;
+                const clicada = index === indiceSelecionado;
+                const esconder = respondida && !correta && !clicada;
 
-            {/* Botão Próxima / Finalizar */}
-            <div className="flex justify-center px-4 py-3">
-              <button
-                onClick={proximaOuResultado}
-                disabled={!respondida}
-                className="flex min-w-[84px] max-w-[480px] w-56 items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] transition-all hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#020617]"
-              >
-                <span className="truncate">
-                  {indiceAtual === perguntas.length - 1
-                    ? "Finalizar"
-                    : "Próxima pergunta"}
-                </span>
-              </button>
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleResposta(index)}
+                    className={
+                      (esconder ? "invisible " : "") + getClassesOpcao(index)
+                    }
+                    disabled={respondida}
+                  >
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-gray-500 bg-gray-900/60 text-sm font-bold text-gray-100">
+                      {letraOpcao(index)}
+                    </div>
+                    <span className="flex-1 text-gray-100 font-medium">
+                      {opcao}
+                    </span>
+                    {getIcone(index)}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </main>
