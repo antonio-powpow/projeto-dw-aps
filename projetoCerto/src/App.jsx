@@ -18,6 +18,7 @@ function App() {
      <Route path="/resultado" element={<Resultado />} />
       <Route path="/criar-quiz" element={<CriarQuiz />} />
       <Route path="/usuario" element={<TelaGerenciadorQuiz />} />
+      
     </Routes>
   );
 }
