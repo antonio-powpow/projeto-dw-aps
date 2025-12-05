@@ -4,7 +4,7 @@ import Cadastro from "./Cadastro.jsx";
 import Categoria from "./Categoria.jsx";
 import Perguntas from "./Perguntas.jsx";
 import Resultado from "./Resultado.jsx";
-import CriarQuiz from "./CriarQuiz.jsx";
+
 
 import TelaGerenciadorQuiz from "./componetesTela/TelaGerenciadorQuiz.jsx";
 
@@ -16,7 +16,7 @@ function App() {
      <Route path="/categoria" element={<Categoria />} />
      <Route path="/pergunta" element={<Perguntas />} />
      <Route path="/resultado" element={<Resultado />} />
-      <Route path="/criar-quiz" element={<CriarQuiz />} />
+
       <Route path="/usuario" element={<TelaGerenciadorQuiz />} />
       
     </Routes>
