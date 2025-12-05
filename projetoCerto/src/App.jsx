@@ -5,15 +5,17 @@ import Categorias from "./Categoria";
 import Perguntas from "./Perguntas.jsx";
 import Resultado from "./Resultado.jsx";
 
+import TelaGerenciadorQuiz from "./componetesTela/TelaGerenciadorQuiz.jsx";
+
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="/categorias" element={<Categorias />} />
-      <Route path="/perguntas" element={<Perguntas />} />
-      <Route path="/resultado" element={<Resultado />} />
-    </Routes>
+  return (<TelaGerenciadorQuiz/>
+    //<Routes>
+    //<Route path="/" element={<Login />} />
+    //  <Route path="/cadastro" element={<Cadastro />} />
+    //  <Route path="/categorias" element={<Categorias />} />
+    //  <Route path="/perguntas" element={<Perguntas />} />
+    //  <Route path="/resultado" element={<Resultado />} />
+    //</Routes>
   );
 }
 
