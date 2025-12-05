@@ -110,9 +110,10 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar }) => {
               value={dadosPergunta.categoria}
               onChange={lidarComMudanca}
             >
-              <option value="Sobre UTFPR">Sobre UTFPR</option>
-              <option value="História">História</option>
-              <option value="Tecnologia">Tecnologia</option>
+              <option value="Esportivas">Esportivas</option>
+              <option value="Filantropicas">Filantrópicas</option>
+              <option value="Recreativas">Recreativas</option>
+              <option value="Culturais">Culturais</option>
             </select>
           </div>
         </div>
