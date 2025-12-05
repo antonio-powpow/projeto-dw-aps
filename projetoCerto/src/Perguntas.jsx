@@ -10,6 +10,10 @@ export default function Pergunta() {
       function login(){
         navigate("/");
       }
+
+      function usuario(){
+        navigate("/usuario");
+      }
   return (
     <div className="min-h-screen w-full bg-[#020617] font-display text-white">
       <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
@@ -34,7 +38,9 @@ export default function Pergunta() {
               </h2>
             </div>
 
-            <div className="hidden sm:flex items-center gap-9">
+            <div
+            onClick={usuario}
+            className="hidden sm:flex items-center gap-9">
               <a
                 href="#"
                 className="text-gray-300 hover:text-primary"

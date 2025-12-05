@@ -11,6 +11,10 @@ export default function Resultado() {
   function login(){
         navigate("/");
       }
+
+      function usuario(){
+        navigate("/usuario");
+      }
   
   return (
     <div className="min-h-screen w-full bg-[#020617] text-white font-display">
@@ -33,7 +37,9 @@ export default function Resultado() {
               </h2>
             </div>
 
-            <div className="hidden sm:flex items-center gap-9">
+            <div 
+            onClick={usuario}
+            className="hidden sm:flex items-center gap-9">
               <a
                 href="#"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"

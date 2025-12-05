@@ -9,9 +9,13 @@ export default function Categoria() {
     navigate("/pergunta");
   }
 
-      function login(){
-        navigate("/");
-      }
+  function login() {
+    navigate("/");
+  }
+
+  function usuario(){
+    navigate("/usuario");
+  }
 
   const baseCard =
     "flex flex-1 flex-col gap-4 rounded-lg border p-6 transition-all cursor-pointer bg-white/5 dark:bg-gray-800/40 backdrop-blur-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 dark:focus-within:ring-offset-background-dark";
@@ -31,21 +35,23 @@ export default function Categoria() {
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div 
-              onClick={login}
-              className="size-14 text-primary">
+              <div
+                onClick={login}
+                className="size-14 text-primary">
                 <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
                   src="/quiz.png"
                   alt="Quiz UTFPR"
                   className="w-full h-auto"
-                /></span> 
+                /></span>
               </div>
               <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
                 Quiz UTFPR
               </h2>
             </div>
 
-            <div className="hidden sm:flex items-center gap-9">
+            <div 
+            onClick={usuario}
+            className="hidden sm:flex items-center gap-9">
               <a
                 href="#"
                 className="text-gray-300 hover:text-primary"
@@ -75,9 +81,8 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => setSelected("filantropicas")}
-                className={`${baseCard} ${
-                  selected === "filantropicas" ? selectedBorder : normalBorder
-                }`}
+                className={`${baseCard} ${selected === "filantropicas" ? selectedBorder : normalBorder
+                  }`}
               >
                 <div className="text-orange-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -98,9 +103,8 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => setSelected("recreativas")}
-                className={`${baseCard} ${
-                  selected === "recreativas" ? selectedBorder : normalBorder
-                }`}
+                className={`${baseCard} ${selected === "recreativas" ? selectedBorder : normalBorder
+                  }`}
               >
                 <div className="text-teal-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -121,9 +125,8 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => setSelected("esportivas")}
-                className={`${baseCard} ${
-                  selected === "esportivas" ? selectedBorder : normalBorder
-                }`}
+                className={`${baseCard} ${selected === "esportivas" ? selectedBorder : normalBorder
+                  }`}
               >
                 <div className="text-red-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -144,9 +147,8 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => setSelected("culturais")}
-                className={`${baseCard} ${
-                  selected === "culturais" ? selectedBorder : normalBorder
-                }`}
+                className={`${baseCard} ${selected === "culturais" ? selectedBorder : normalBorder
+                  }`}
               >
                 <div className="text-indigo-400">
                   <span className="material-symbols-outlined text-4xl">

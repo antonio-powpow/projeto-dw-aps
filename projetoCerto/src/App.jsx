@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Cadastro from "./Cadastro";
-import Categorias from "./Categoria";
+import Login from "./Login.jsx";
+import Cadastro from "./Cadastro.jsx";
+import Categoria from "./Categoria.jsx";
 import Perguntas from "./Perguntas.jsx";
 import Resultado from "./Resultado.jsx";
 import CriarQuiz from "./CriarQuiz.jsx";
@@ -9,14 +9,16 @@ import CriarQuiz from "./CriarQuiz.jsx";
 import TelaGerenciadorQuiz from "./componetesTela/TelaGerenciadorQuiz.jsx";
 
 function App() {
-  return (<TelaGerenciadorQuiz/>
-    //<Routes>
-    //<Route path="/" element={<Login />} />
-    //  <Route path="/cadastro" element={<Cadastro />} />
-    //  <Route path="/categorias" element={<Categorias />} />
-    //  <Route path="/perguntas" element={<Perguntas />} />
-    //  <Route path="/resultado" element={<Resultado />} />
-    //</Routes>
+  return (
+    <Routes>
+    <Route path="/" element={<Login />} />
+     <Route path="/cadastro" element={<Cadastro />} />
+     <Route path="/categoria" element={<Categoria />} />
+     <Route path="/pergunta" element={<Perguntas />} />
+     <Route path="/resultado" element={<Resultado />} />
+      <Route path="/criar-quiz" element={<CriarQuiz />} />
+      <Route path="/usuario" element={<TelaGerenciadorQuiz />} />
+    </Routes>
   );
 }
 
