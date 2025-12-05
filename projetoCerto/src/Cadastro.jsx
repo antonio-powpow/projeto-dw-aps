@@ -1,7 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function Cadastro() {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    
+      function categoria() {
+        navigate("/categoria");
+      }
 
     return (
         <div
@@ -89,8 +97,8 @@ export default function Cadastro() {
 
                     {/* Botão */}
                     <div className="mt-6 flex w-full flex-col items-center gap-4">
-                        <button
-                            type="submit"
+                        <button onClick={categoria}
+                            
                             className="flex h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-primary text-base font-bold text-white transition-colors hover:bg-primary/90"
                         >
                             Registrar

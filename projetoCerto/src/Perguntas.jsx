@@ -1,25 +1,24 @@
 // Pergunta.jsx
+import { useNavigate } from "react-router-dom";
 export default function Pergunta() {
+  const navigate = useNavigate();
+  function resultado() {
+        navigate("/resultado");
+      }
   return (
     <div className="bg-background-light dark:bg-background-dark font-display">
       <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div className="size-6 text-primary">
-                <svg
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z"
-                    fill="currentColor"
-                  />
-                </svg>
+              <div className="size-14 text-primary">
+                <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
+                  src="/quiz.png"
+                  alt="Quiz UTFPR"
+                /></span>
               </div>
               <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
-                Gincana da UTFPR
+                Quiz UTFPR
               </h2>
             </div>
 
@@ -28,7 +27,7 @@ export default function Pergunta() {
                 href="#"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
               >
-                <span className="material-symbols-outlined">
+                <span className="material-symbols-outlined text-2xl">
                   account_circle
                 </span>
               </a>
@@ -94,7 +93,9 @@ export default function Pergunta() {
 
             {/* Botão responder */}
             <div className="flex justify-center px-4 py-3">
-              <button className="flex min-w-[84px] max-w-[480px] w-56 cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] transition-all hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark disabled:cursor-not-allowed disabled:bg-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-500">
+              <button 
+              onClick={resultado}
+              className="flex min-w-[84px] max-w-[480px] w-56 cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] transition-all hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark disabled:cursor-not-allowed disabled:bg-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-500">
                 <span className="truncate">Responder</span>
               </button>
             </div>
