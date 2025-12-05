@@ -1,7 +1,13 @@
 import React from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 // Recebe props para controlar qual item está ativo e a função de navegação
 const BarraLateral = ({ telaAtual, aoNavegar }) => {
+  const navigate = useNavigate();
+  function Sair(){
+    navigate("/categoria")
+    
+  }
   
   // Adicionamos 'id' para facilitar a identificação da tela
   const itensMenu = [
@@ -39,9 +45,12 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
             </button>
           ))}
         </nav>
+        
       </div>
-
-      <button className="text-gray-400 hover:text-red-500 flex items-center p-3">
+     
+      <button onClick={Sair} className="text-gray-400 hover:text-red-500 flex items-center p-3"
+      
+      >
         ➡️ Sair
       </button>
     </div>

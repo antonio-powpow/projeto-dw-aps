@@ -1,30 +1,23 @@
 import React, { useState } from 'react';
 
-const perguntasMock = [
- 
-];
-
-const BancoDePerguntas = ({ onAdicionarPergunta }) => {
-  const [perguntas, setPerguntas] = useState(perguntasMock);
+// Agora recebemos 'perguntas' e 'onExcluir' como PROPS vindas do pai
+const BancoDePerguntas = ({ onAdicionarPergunta, perguntas, onExcluir }) => {
   const [termoBusca, setTermoBusca] = useState('');
   const [categoriaFiltro, setCategoriaFiltro] = useState('Todas as Categorias');
 
+  // Filtragem baseada nas props recebidas
   const perguntasFiltradas = perguntas.filter(p => {
     const correspondeBusca = p.pergunta.toLowerCase().includes(termoBusca.toLowerCase());
     const correspondeCategoria = categoriaFiltro === 'Todas as Categorias' || p.categoria === categoriaFiltro;
     return correspondeBusca && correspondeCategoria;
   });
 
-  const categoriasUnicas = ['Todas as Categorias', ...new Set(perguntasMock.map(p => p.categoria))];
-
-  const lidarComEdicao = (id) => {
-    console.log(`Editar pergunta com ID: ${id}`);
-  };
+  const categoriasUnicas = ['Todas as Categorias', ...new Set(perguntas.map(p => p.categoria))];
 
   const lidarComExclusao = (id) => {
     if (window.confirm(`Tem certeza que deseja excluir a pergunta ID ${id}?`)) {
-      setPerguntas(perguntas.filter(p => p.id !== id));
-      console.log(`Pergunta excluída com ID: ${id}`);
+      // Chama a função do pai para excluir
+      onExcluir(id); 
     }
   };
 
@@ -40,6 +33,7 @@ const BancoDePerguntas = ({ onAdicionarPergunta }) => {
         </button>
       </header>
 
+      {/* Busca e Filtros */}
       <div className="flex space-x-4 mb-6">
         <div className="flex-grow relative">
           <input
@@ -63,19 +57,14 @@ const BancoDePerguntas = ({ onAdicionarPergunta }) => {
         </select>
       </div>
 
+      {/* Tabela */}
       <div className="overflow-x-auto bg-gray-800 rounded-lg">
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-3/5">
-                Pergunta
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-1/5">
-                Categoria
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-1/5">
-                Ações
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-3/5">Pergunta</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-1/5">Categoria</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-1/5">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-700">
@@ -89,13 +78,7 @@ const BancoDePerguntas = ({ onAdicionarPergunta }) => {
                     {item.categoria}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                    <button
-                      onClick={() => lidarComEdicao(item.id)}
-                      className="text-yellow-500 hover:text-yellow-600 transition duration-150"
-                      title="Editar"
-                    >
-                      ✏️
-                    </button>
+                    <button className="text-yellow-500 hover:text-yellow-600 transition duration-150" title="Editar">✏️</button>
                     <button
                       onClick={() => lidarComExclusao(item.id)}
                       className="text-red-500 hover:text-red-600 transition duration-150"
