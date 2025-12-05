@@ -6,7 +6,6 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
   // Adicionamos 'id' para facilitar a identificação da tela
   const itensMenu = [
     { id: 'jogar', nome: 'Jogar', icone: '🎮' },
-    { id: 'quizzes', nome: 'Quizzes', icone: '📝' }, // ID matches the state in parent
     { id: 'banco', nome: 'Banco de Questões', icone: '❓' }, // Alterei o nome para bater com a imagem 2
     { id: 'config', nome: 'Configurações', icone: '⚙️' },
   ];

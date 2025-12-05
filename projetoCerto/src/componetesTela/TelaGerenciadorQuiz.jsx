@@ -11,8 +11,6 @@ const TelaGerenciadorQuiz = () => {
   // Função auxiliar para renderizar o conteúdo correto
   const renderizarConteudo = () => {
     switch (telaAtiva) {
-      case 'quizzes':
-        return <GestaoQuizzes onCriarQuiz={() => alert("Ir para criar quiz...")} />;
       case 'banco':
         return <BancoDePerguntas onAdicionarPergunta={() => setTelaAtiva('form')} />;
       case 'form':
