@@ -7,11 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Configuracoes from './Configuracoes'; 
 
 // Movemos os dados iniciais para cá (ou deixe vazio [])
-const perguntasIniciais = [
-  { id: 1, pergunta: 'Em que ano a UTFPR foi fundada como Universidade Federal?', categoria: 'Sobre UTFPR' },
-  { id: 2, pergunta: 'Quem descobriu o princípio da relatividade?', categoria: 'Ciência' },
-  { id: 3, pergunta: 'Em que cidade está localizado o campus principal da UTFPR?', categoria: 'Sobre UTFPR' },
-];
+const perguntasIniciais = [];
 
 const TelaGerenciadorQuiz = () => {
   const navigate = useNavigate();
