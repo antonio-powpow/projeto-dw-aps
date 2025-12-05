@@ -10,6 +10,10 @@ export default function Login() {
     navigate("/cadastro");
   }
 
+  function categoria(){
+    navigate("/categoria");
+  }
+
   return (
     <div className="font-display bg-background-light dark:bg-background-dark">
       <div className="relative flex min-h-screen w-full flex-col">
@@ -108,7 +112,9 @@ export default function Login() {
 
                   {/* BUTTONS */}
                   <div className="flex flex-col gap-4">
-                    <button className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border 
+                    <button
+                    onClick={categoria}
+                    className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border 
                     border-zinc-300 px-5 font-bold hover:bg-zinc-100 dark:border-zinc-700 dark:text-white 
                     dark:hover:bg-zinc-800">
                       Entrar

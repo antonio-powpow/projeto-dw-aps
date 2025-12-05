@@ -4,6 +4,7 @@ import Cadastro from "./Cadastro";
 import Categorias from "./Categoria";
 import Perguntas from "./Perguntas.jsx";
 import Resultado from "./Resultado.jsx";
+import CriarQuiz from "./CriarQuiz.jsx";
 
 import TelaGerenciadorQuiz from "./componetesTela/TelaGerenciadorQuiz.jsx";
 

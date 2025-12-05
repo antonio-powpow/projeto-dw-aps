@@ -1,26 +1,45 @@
 // DesempenhoNovo.jsx
+import { useNavigate } from "react-router-dom";
 export default function Resultado() {
+  const navigate = useNavigate();
+  function outroQuiz(){
+    navigate("/categoria");
+  }
+  function jogarNovamente(){
+    navigate("/pergunta");
+  }
+  
   return (
     <div className="min-h-screen w-full bg-[#020617] text-white font-display">
       {/* Container geral */}
-      <div className="flex flex-col min-h-screen px-4 sm:px-8 py-6">
+      <div className="flex flex-col items-center min-h-screen px-4 sm:px-8 py-6">
         {/* Header */}
-        <header className="flex items-center justify-between w-full max-w-5xl mx-auto py-2">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-              <span className="text-xs font-extrabold tracking-tight">
-                G
-              </span>
+        <div className="w-full max-w-5xl">
+          <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
+            <div className="flex items-center gap-4 text-gray-800 dark:text-white">
+              <div className="size-14 text-primary">
+                <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
+                  src="/quiz.png"
+                  alt="Quiz UTFPR"
+                /></span>
+              </div>
+              <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
+                Quiz UTFPR
+              </h2>
             </div>
-            <span className="font-semibold text-sm sm:text-base">
-              Gincana UTFPR
-            </span>
-          </div>
 
-          <button className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-slate-200 hover:bg-white/10">
-            <span className="material-symbols-outlined text-2xl">account_circle</span>
-          </button>
-        </header>
+            <div className="hidden sm:flex items-center gap-9">
+              <a
+                href="#"
+                className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+              >
+                <span className="material-symbols-outlined text-2xl">
+                  account_circle
+                </span>
+              </a>
+            </div>
+          </header>
+        </div>
 
         {/* Conteúdo principal */}
         <main className="flex-1 flex flex-col items-center justify-center w-full">
@@ -83,10 +102,14 @@ export default function Resultado() {
 
             {/* Botões */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
-              <button className="flex-1 h-11 rounded-full bg-blue-600 hover:bg-blue-500 text-sm font-semibold shadow-md">
+              <button 
+              onClick={jogarNovamente}
+              className="flex-1 h-11 rounded-full bg-blue-600 hover:bg-blue-500 text-sm font-semibold shadow-md">
                 Jogar Novamente
               </button>
-              <button className="flex-1 h-11 rounded-full bg-[#111827] text-sm font-semibold text-slate-100 hover:bg-[#1f2937]">
+              <button 
+              onClick={outroQuiz}
+              className="flex-1 h-11 rounded-full bg-[#111827] text-sm font-semibold text-slate-100 hover:bg-[#1f2937]">
                 Jogar outro quiz
               </button>
             </div>
