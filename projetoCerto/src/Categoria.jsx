@@ -125,7 +125,8 @@ const perguntas = [
 export default function Categoria() {
   const [selected, setSelected] = useState(null);
   const [perguntasSelecionadas, setPerguntasSelecionadas] = useState([]);
-  const [animating, setAnimating] = useState(false);
+  const [animatingFade, setAnimatingFade] = useState(false);
+  const [animatingCenter, setAnimatingCenter] = useState(false);
   const navigate = useNavigate();
 
   function sortearPerguntasPorCategoria(categoria) {
@@ -135,7 +136,7 @@ export default function Categoria() {
   }
 
   function handleSelecionar(categoria) {
-    if (animating) return; // evita duplo clique
+    if (animatingFade || animatingCenter) return;
 
     setSelected(categoria);
 
@@ -143,21 +144,28 @@ export default function Categoria() {
     setPerguntasSelecionadas(selecionadas);
     console.log("Perguntas sorteadas:", selecionadas);
 
-    setAnimating(true); // dispara animação
+    // primeiro move o card selecionado levemente para o centro
+    setAnimatingCenter(true);
   }
 
-  // depois da animação, navega para /pergunta
+  // Depois do slide para o centro, dispara o fade geral + navegação
   useEffect(() => {
-    if (!animating || !selected || !perguntasSelecionadas.length) return;
+    if (!animatingCenter || !selected || !perguntasSelecionadas.length) return;
 
-    const timer = setTimeout(() => {
-      navigate("/pergunta", {
-        state: { perguntas: perguntasSelecionadas, categoria: selected },
-      });
-    }, 400); // tempo da animação
+    const timerCenter = setTimeout(() => {
+      setAnimatingFade(true); // fade/scale do bloco inteiro
 
-    return () => clearTimeout(timer);
-  }, [animating, selected, perguntasSelecionadas, navigate]);
+      const timerFade = setTimeout(() => {
+        navigate("/pergunta", {
+          state: { perguntas: perguntasSelecionadas, categoria: selected },
+        });
+      }, 350);
+
+      return () => clearTimeout(timerFade);
+    }, 350); // duração do slide da categoria
+
+    return () => clearTimeout(timerCenter);
+  }, [animatingCenter, selected, perguntasSelecionadas, navigate]);
 
   function login() {
     navigate("/");
@@ -174,9 +182,27 @@ export default function Categoria() {
   const selectedBorder =
     "border-primary shadow-lg ring-2 ring-primary/60 scale-[1.03]";
 
-  const containerAnim = animating
+  const containerAnim = animatingFade
     ? "scale-95 opacity-0"
     : "scale-100 opacity-100";
+
+  // classes extras para o card selecionado deslizar ao centro (um leve -translate-y)
+  function getCardClasses(categoriaKey) {
+    const isSelected = selected === categoriaKey;
+    const invisivel = selected && selected !== categoriaKey;
+
+    const slideClass =
+      isSelected && animatingCenter ? "translate-y-[-10px]" : "";
+
+    return (
+      (invisivel ? "opacity-0 " : "opacity-100 ") +
+      baseCard +
+      " " +
+      (isSelected ? selectedBorder : normalBorder) +
+      " " +
+      slideClass
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-[#020617] font-display text-white">
@@ -238,9 +264,7 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => handleSelecionar("filantropicas")}
-                className={`${baseCard} ${
-                  selected === "filantropicas" ? selectedBorder : normalBorder
-                }`}
+                className={getCardClasses("filantropicas")}
               >
                 <div className="text-orange-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -261,9 +285,7 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => handleSelecionar("recreativas")}
-                className={`${baseCard} ${
-                  selected === "recreativas" ? selectedBorder : normalBorder
-                }`}
+                className={getCardClasses("recreativas")}
               >
                 <div className="text-teal-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -284,9 +306,7 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => handleSelecionar("esportivas")}
-                className={`${baseCard} ${
-                  selected === "esportivas" ? selectedBorder : normalBorder
-                }`}
+                className={getCardClasses("esportivas")}
               >
                 <div className="text-red-400">
                   <span className="material-symbols-outlined text-4xl">
@@ -307,9 +327,7 @@ export default function Categoria() {
               <button
                 type="button"
                 onClick={() => handleSelecionar("culturais")}
-                className={`${baseCard} ${
-                  selected === "culturais" ? selectedBorder : normalBorder
-                }`}
+                className={getCardClasses("culturais")}
               >
                 <div className="text-indigo-400">
                   <span className="material-symbols-outlined text-4xl">

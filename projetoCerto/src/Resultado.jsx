@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Resultado() {
   const navigate = useNavigate();
@@ -7,12 +8,59 @@ export default function Resultado() {
   const desempenho = location.state?.desempenho;
 
   const total = desempenho?.totalPerguntas || 0;
-  const acertos = desempenho?.acertos || 0;
-  const erros = desempenho?.erros || 0;
+  const acertosFinais = desempenho?.acertos || 0;
+  const errosFinais = desempenho?.erros || 0;
   const categoria = desempenho?.categoria || "";
-  const pontuacao = total ? Math.round((acertos / total) * 100) : 0;
+  const pontuacaoFinal = total ? Math.round((acertosFinais / total) * 100) : 0;
 
-  const greenPortion = Math.min(pontuacao, 100);
+  // estados animados
+  const [acertosAnim, setAcertosAnim] = useState(0);
+  const [errosAnim, setErrosAnim] = useState(0);
+  const [pontuacaoAnim, setPontuacaoAnim] = useState(0);
+  const [fadeIn, setFadeIn] = useState(false);
+
+  // fade-in do card ao montar
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
+
+  // animação dos contadores e da pontuação
+  useEffect(() => {
+    if (!desempenho) return;
+
+    const duracao = 1200; // ms
+    const passos = Math.max(acertosFinais + errosFinais, 1);
+    const intervalo = duracao / passos;
+
+    let ac = 0;
+    let er = 0;
+    let frame = 0;
+
+    const timer = setInterval(() => {
+      frame += 1;
+
+      // distribui acertos/erros proporcionalmente aos frames
+      if (ac < acertosFinais) ac += 1;
+      else if (er < errosFinais) er += 1;
+
+      setAcertosAnim(ac);
+      setErrosAnim(er);
+
+      const progresso = (frame / passos) * pontuacaoFinal;
+      setPontuacaoAnim((prev) =>
+        progresso > pontuacaoFinal ? pontuacaoFinal : Math.round(progresso)
+      );
+
+      if (ac >= acertosFinais && er >= errosFinais) {
+        setPontuacaoAnim(pontuacaoFinal);
+        clearInterval(timer);
+      }
+    }, intervalo);
+
+    return () => clearInterval(timer);
+  }, [desempenho, acertosFinais, errosFinais, pontuacaoFinal]);
+
+  const greenPortion = Math.min(pontuacaoAnim, 100);
   const progressStyle = {
     background: `conic-gradient(
       #22c55e 0deg,
@@ -55,6 +103,10 @@ export default function Resultado() {
   function usuario() {
     navigate("/usuario");
   }
+
+  const cardAnimClass = fadeIn
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-3";
 
   return (
     <div className="min-h-screen w-full bg-[#020617] font-display text-white">
@@ -106,29 +158,15 @@ export default function Resultado() {
               </p>
             </div>
 
-            {/* Card central “flutuando” */}
+            {/* Card central com fade */}
             <div
-              className="w-full max-w-3xl rounded-3xl bg-[#020617]/80 border border-white/5 shadow-[0_30px_100px_rgba(15,23,42,0.9)] px-6 sm:px-10 py-8 flex items-center justify-center transition-transform duration-700 ease-in-out"
-              style={{
-                animation:
-                  "floatCard 4s ease-in-out infinite",
-              }}
+              className={`w-full max-w-3xl rounded-3xl bg-[#020617]/80 border border-white/5 shadow-[0_30px_100px_rgba(15,23,42,0.9)] px-6 sm:px-10 py-8 flex items-center justify-center transform transition-all duration-500 ease-out ${cardAnimClass}`}
             >
-              <style>
-                {`
-                  @keyframes floatCard {
-                    0% { transform: translateY(0px); }
-                    50% { transform: translateY(-6px); }
-                    100% { transform: translateY(0px); }
-                  }
-                `}
-              </style>
-
               <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
-                {/* Círculo funcional */}
+                {/* Círculo funcional animado */}
                 <div className="relative w-52 h-52 flex items-center justify-center">
                   <div
-                    className="absolute inset-0 rounded-full"
+                    className="absolute inset-0 rounded-full transition-all duration-200"
                     style={progressStyle}
                   />
                   <div className="absolute inset-5 rounded-full bg-[#020617] flex flex-col items-center justify-center text-center">
@@ -136,12 +174,12 @@ export default function Resultado() {
                       PONTUAÇÃO
                     </span>
                     <span className="text-5xl font-extrabold text-blue-500">
-                      {pontuacao}
+                      {pontuacaoAnim}
                     </span>
                   </div>
                 </div>
 
-                {/* Certas / Erradas */}
+                {/* Certas / Erradas animadas */}
                 <div className="flex flex-col gap-5">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
@@ -150,7 +188,9 @@ export default function Resultado() {
                       </span>
                     </div>
                     <div className="flex flex-col items-start">
-                      <span className="text-lg font-semibold">{acertos}</span>
+                      <span className="text-lg font-semibold">
+                        {acertosAnim}
+                      </span>
                       <span className="text-xs text-slate-400">Certas</span>
                     </div>
                   </div>
@@ -162,7 +202,9 @@ export default function Resultado() {
                       </span>
                     </div>
                     <div className="flex flex-col items-start">
-                      <span className="text-lg font-semibold">{erros}</span>
+                      <span className="text-lg font-semibold">
+                        {errosAnim}
+                      </span>
                       <span className="text-xs text-slate-400">Erradas</span>
                     </div>
                   </div>
