@@ -5,7 +5,6 @@ import Categoria from "./Categoria.jsx";
 import Perguntas from "./Perguntas.jsx";
 import Resultado from "./Resultado.jsx";
 
-
 import TelaGerenciadorQuiz from "./componetesTela/TelaGerenciadorQuiz.jsx";
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
      <Route path="/categoria" element={<Categoria />} />
      <Route path="/pergunta" element={<Perguntas />} />
      <Route path="/resultado" element={<Resultado />} />
-
       <Route path="/usuario" element={<TelaGerenciadorQuiz />} />
       
     </Routes>

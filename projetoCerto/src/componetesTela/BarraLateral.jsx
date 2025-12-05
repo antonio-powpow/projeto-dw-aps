@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const BarraLateral = ({ telaAtual, aoNavegar }) => {
   const navigate = useNavigate();
   function Sair(){
-    navigate("/categoria")
+    navigate("/")
     
   }
   
