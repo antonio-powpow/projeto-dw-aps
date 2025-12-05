@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BarraLateral from './BarraLateral'; 
 import BancoDePerguntas from './BancoDePerguntas'; 
 import FormularioNovaPergunta from './FormularioNovaPergunta'; 
-import GestaoQuizzes from './GestaoQuizzes'; 
+
 import Configuracoes from './Configuracoes'; 
 
 // Movemos os dados iniciais para cá (ou deixe vazio [])
