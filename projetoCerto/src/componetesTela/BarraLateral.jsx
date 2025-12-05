@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-
+import ConfigIcon from '/config.svg';
 // Recebe props para controlar qual item está ativo e a função de navegação
 const BarraLateral = ({ telaAtual, aoNavegar }) => {
   const navigate = useNavigate();
@@ -11,11 +11,12 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
   
   // Adicionamos 'id' para facilitar a identificação da tela
   const itensMenu = [
-    { id: 'jogar', nome: 'Jogar', icone: '🎮' },
-    { id: 'banco', nome: 'Banco de Questões', icone: '❓' }, // Alterei o nome para bater com a imagem 2
-    { id: 'config', nome: 'Configurações', icone: '⚙️' },
+    { id: 'jogar', nome: 'Jogar', icone: '' },
+    { id: 'banco', nome: 'Banco de Questões', icone: '' }, // Alterei o nome para bater com a imagem 2
+    { id: 'config', nome: 'Configurações', icone: ConfigIcon },
   ];
 
+  
   return (
     <div className="w-64 flex flex-col justify-between bg-gray-800 p-6 shadow-2xl">
       <div>
@@ -24,8 +25,8 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
             A
           </div>
           <div>
-            <p className="text-white font-semibold">Admin</p>
-            <p className="text-sm text-gray-400">Quiz Manager</p>
+            <p className="text-white font-semibold">Administrador</p>
+            <p className="text-sm text-gray-400"></p>
           </div>
         </div>
 
@@ -40,7 +41,7 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
                   : 'text-gray-300 hover:bg-gray-700'
                 }`}
             >
-              <span className="mr-3">{item.icone}</span>
+              <span className="w-6 h-6 mr-4 " ><img  src={item.icone} alt="Foto" /></span>
               {item.nome}
             </button>
           ))}
@@ -51,7 +52,7 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
       <button onClick={Sair} className="text-gray-400 hover:text-red-500 flex items-center p-3"
       
       >
-        ➡️ Sair
+         Sair
       </button>
     </div>
   );
