@@ -5,13 +5,18 @@ export default function Pergunta() {
   function resultado() {
         navigate("/resultado");
       }
+      function login(){
+        navigate("/");
+      }
   return (
     <div className="bg-background-light dark:bg-background-dark font-display">
       <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div className="size-14 text-primary">
+              <div
+              onClick={login}
+              className="size-14 text-primary">
                 <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
                   src="/quiz.png"
                   alt="Quiz UTFPR"

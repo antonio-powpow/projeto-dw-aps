@@ -8,6 +8,9 @@ export default function Resultado() {
   function jogarNovamente(){
     navigate("/pergunta");
   }
+  function login(){
+        navigate("/");
+      }
   
   return (
     <div className="min-h-screen w-full bg-[#020617] text-white font-display">
@@ -17,7 +20,9 @@ export default function Resultado() {
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div className="size-14 text-primary">
+              <div 
+              onClick={login}
+              className="size-14 text-primary">
                 <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
                   src="/quiz.png"
                   alt="Quiz UTFPR"

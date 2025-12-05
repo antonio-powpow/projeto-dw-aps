@@ -9,6 +9,10 @@ const navigate = useNavigate();
         navigate("/pergunta");
       }
 
+      function login(){
+        navigate("/");
+      }
+
   const baseCard =
     "flex flex-1 flex-col gap-4 rounded-lg border p-6 transition-all cursor-pointer bg-white dark:bg-gray-800/20 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 dark:focus-within:ring-offset-background-dark";
   const normalBorder = "border-gray-200 dark:border-white/10 hover:border-primary/50 hover:shadow-lg";
@@ -20,7 +24,9 @@ const navigate = useNavigate();
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div className="size-14 text-primary">
+              <div 
+              onClick={login}
+              className="size-14 text-primary">
                 <span className="w-full md:w-1/4 lg:w-1/4 h-auto" ><img
                   src="/quiz.png"
                   alt="Quiz UTFPR"
