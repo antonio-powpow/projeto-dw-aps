@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BarraLateral from './BarraLateral'; 
 import BancoDePerguntas from './BancoDePerguntas'; 
 import FormularioNovaPergunta from './FormularioNovaPergunta'; 
+import { useNavigate } from "react-router-dom";
 
 import Configuracoes from './Configuracoes'; 
 
@@ -13,6 +14,11 @@ const perguntasIniciais = [
 ];
 
 const TelaGerenciadorQuiz = () => {
+  const navigate = useNavigate();
+
+  function pergunta() {
+    navigate("/pergunta");
+  }
   const [telaAtiva, setTelaAtiva] = useState('quizzes');
   
   // 1. O Estado das perguntas agora vive aqui no Pai
@@ -57,7 +63,7 @@ const TelaGerenciadorQuiz = () => {
         );
       
       case 'jogar':
-        return <div className="text-white p-8">Tela de Jogo (Em construção)</div>;
+        return pergunta();
       
       case 'config':
         return <Configuracoes />;
