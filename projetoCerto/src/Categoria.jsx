@@ -38,7 +38,7 @@ export default function Categoria() {
                   src="/quiz.png"
                   alt="Quiz UTFPR"
                   className="w-full h-auto"
-                />
+                /></span> 
               </div>
               <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
                 Quiz UTFPR
