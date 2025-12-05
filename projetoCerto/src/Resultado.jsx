@@ -24,7 +24,7 @@ export default function Resultado() {
     setFadeIn(true);
   }, []);
 
-  // animação dos contadores e da pontuação
+  // animação dos contadores (certas / erradas)
   useEffect(() => {
     if (!desempenho) return;
 
@@ -34,31 +34,45 @@ export default function Resultado() {
 
     let ac = 0;
     let er = 0;
-    let frame = 0;
 
     const timer = setInterval(() => {
-      frame += 1;
+      if (ac < acertosFinais) {
+        ac += 1;
+        setAcertosAnim(ac);
+      } else if (er < errosFinais) {
+        er += 1;
+        setErrosAnim(er);
+      } else {
+        clearInterval(timer);
+      }
+    }, intervalo);
 
-      // distribui acertos/erros proporcionalmente aos frames
-      if (ac < acertosFinais) ac += 1;
-      else if (er < errosFinais) er += 1;
+    return () => clearInterval(timer);
+  }, [desempenho, acertosFinais, errosFinais]);
 
-      setAcertosAnim(ac);
-      setErrosAnim(er);
+  // animação suave apenas da pontuação / círculo
+  useEffect(() => {
+    if (!desempenho) return;
 
-      const progresso = (frame / passos) * pontuacaoFinal;
-      setPontuacaoAnim((prev) =>
-        progresso > pontuacaoFinal ? pontuacaoFinal : Math.round(progresso)
-      );
+    const duracao = 1200; // ms
+    const steps = 60;
+    const intervalo = duracao / steps;
+    let currentStep = 0;
 
-      if (ac >= acertosFinais && er >= errosFinais) {
+    const timer = setInterval(() => {
+      currentStep += 1;
+      const t = currentStep / steps; // 0 → 1
+      const valor = Math.round(pontuacaoFinal * t);
+      setPontuacaoAnim(valor >= pontuacaoFinal ? pontuacaoFinal : valor);
+
+      if (currentStep >= steps) {
         setPontuacaoAnim(pontuacaoFinal);
         clearInterval(timer);
       }
     }, intervalo);
 
     return () => clearInterval(timer);
-  }, [desempenho, acertosFinais, errosFinais, pontuacaoFinal]);
+  }, [desempenho, pontuacaoFinal]);
 
   const greenPortion = Math.min(pontuacaoAnim, 100);
   const progressStyle = {
@@ -163,7 +177,7 @@ export default function Resultado() {
               className={`w-full max-w-3xl rounded-3xl bg-[#020617]/80 border border-white/5 shadow-[0_30px_100px_rgba(15,23,42,0.9)] px-6 sm:px-10 py-8 flex items-center justify-center transform transition-all duration-500 ease-out ${cardAnimClass}`}
             >
               <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
-                {/* Círculo funcional animado */}
+                {/* Círculo funcional animado (suave) */}
                 <div className="relative w-52 h-52 flex items-center justify-center">
                   <div
                     className="absolute inset-0 rounded-full transition-all duration-200"
