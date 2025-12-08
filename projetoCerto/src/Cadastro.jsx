@@ -15,6 +15,8 @@ export default function Cadastro() {
         navigate("/");
       }
 
+      
+
     return (
         <div
             className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4 group/design-root font-display"
@@ -40,17 +42,6 @@ export default function Cadastro() {
                 </div>
 
                 <form className="mt-8 flex w-full flex-col gap-4">
-                    {/* Nome */}
-                    <label className="flex flex-col flex-1">
-                        <p className="pb-2 text-base font-medium text-gray-900 dark:text-white leading-normal">
-                            Nome de Usuário
-                        </p>
-                        <input
-                            className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary h-14 placeholder:text-gray-400 dark:placeholder:text-[#9da6b9] p-[15px] text-base font-normal leading-normal border border-gray-300 dark:border-[#3b4354] bg-white dark:bg-[#1c1f27] focus:border-primary"
-                            placeholder="Digite seu nome de usuário"
-                        />
-                    </label>
-
                     {/* Email */}
                     <label className="flex flex-col flex-1">
                         <p className="pb-2 text-base font-medium text-gray-900 dark:text-white leading-normal">
