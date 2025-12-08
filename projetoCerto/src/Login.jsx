@@ -64,14 +64,14 @@ export default function Login() {
                     {/* EMAIL */}
                     <label className="flex flex-col flex-1">
                       <p className="text-base font-medium pb-2 text-zinc-900 dark:text-white">
-                        Email
+                        Email ou nome de usuário
                       </p>
                       <input
                         className="form-input w-full rounded-lg border border-zinc-300 bg-transparent px-4 py-3 
                         text-zinc-900 placeholder:text-zinc-400 
                         focus:border-primary focus:outline-none focus:ring-2 
                         focus:ring-primary/20 dark:border-zinc-700 dark:text-white"
-                        placeholder="Digite seu email"
+                        placeholder="Digite seu email ou nome de usuário"
                       />
                     </label>
 
@@ -148,7 +148,7 @@ export default function Login() {
 
                 <p className="px-8 text-center text-sm text-zinc-600 dark:text-zinc-400">
                   Não tem uma conta?{" "}
-                  <button onClick={cadastro} className="font-medium underline hover:text-primary" >Cadastre-se</button>
+                  <button onClick={cadastro} className="hover:underline font-bold underline hover:text-primary" >Cadastre-se</button>
                 </p>
               </div>
             </div>

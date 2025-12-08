@@ -12,8 +12,8 @@ const perguntasIniciais = [];
 const TelaGerenciadorQuiz = () => {
   const navigate = useNavigate();
 
-  function pergunta() {
-    navigate("/pergunta");
+  function categoria() {
+    navigate("/categoria");
   }
   const [telaAtiva, setTelaAtiva] = useState('quizzes');
   
@@ -59,7 +59,7 @@ const TelaGerenciadorQuiz = () => {
         );
       
       case 'jogar':
-        return pergunta();
+        return categoria();
       
       case 'config':
         return <Configuracoes />;

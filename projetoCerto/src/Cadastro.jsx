@@ -11,6 +11,10 @@ export default function Cadastro() {
         navigate("/categoria");
       }
 
+      function login(){
+        navigate("/");
+      }
+
     return (
         <div
             className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4 group/design-root font-display"
@@ -106,9 +110,7 @@ export default function Cadastro() {
 
                         <p className="text-base font-normal text-gray-500 dark:text-[#9da6b9]">
                             Já tem uma conta?{" "}
-                            <a href="#" className="font-bold text-primary hover:underline">
-                                Faça login
-                            </a>
+                             <button onClick={login} className="  hover:underline font-bold underline hover:text-primary" >Faça login</button>
                         </p>
                     </div>
                 </form>
