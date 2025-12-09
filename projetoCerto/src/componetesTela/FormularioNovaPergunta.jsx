@@ -7,58 +7,73 @@ const estiloLabel = "block text-sm font-medium text-gray-700 dark:text-gray-300 
 const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
   const { t } = useQuiz();
   
+  // O ESTADO AGORA SEGUE EXATAMENTE O FORMATO QUE VOCÊ PEDIU
   const [dadosPergunta, setDadosPergunta] = useState({
-    texto: '',
-    opcoes: { A: '', B: '', C: '', D: '' },
     categoria: 'Filantrópicas',
-    respostaCorreta: '',
+    pergunta: '',
+    opcoes: ['', '', '', ''], // Array de 4 posições vazias
+    respostaCorreta: null,   // Será um número (índice 0, 1, 2 ou 3)
     id: null
   });
 
-  // Efeito para carregar dados se for edição
+  // Efeito para carregar dados na Edição
   useEffect(() => {
     if (dadosEdicao) {
       setDadosPergunta({
-        texto: dadosEdicao.pergunta,
-        opcoes: dadosEdicao.opcoes || { A: '', B: '', C: '', D: '' },
         categoria: dadosEdicao.categoria,
-        respostaCorreta: dadosEdicao.respostaCorreta || '',
+        pergunta: dadosEdicao.pergunta,
+        // Garante que seja um array, se não for, cria um padrão
+        opcoes: Array.isArray(dadosEdicao.opcoes) ? dadosEdicao.opcoes : ['', '', '', ''],
+        respostaCorreta: dadosEdicao.respostaCorreta, // Espera-se um número
         id: dadosEdicao.id
       });
     }
   }, [dadosEdicao]);
 
+  // Atualiza texto da pergunta ou categoria
   const lidarComMudanca = (e) => {
     const { name, value } = e.target;
     setDadosPergunta(anterior => ({ ...anterior, [name]: value }));
   };
 
-  const lidarComMudancaOpcao = (chave, valor) => {
+  // Atualiza uma opção específica do Array pelo índice
+  const lidarComMudancaOpcao = (index, valor) => {
+    const novasOpcoes = [...dadosPergunta.opcoes];
+    novasOpcoes[index] = valor;
+    
     setDadosPergunta(anterior => ({
       ...anterior,
-      opcoes: { ...anterior.opcoes, [chave]: valor }
+      opcoes: novasOpcoes
     }));
   };
 
-  const selecionarCorreta = (chave) => {
-    setDadosPergunta(anterior => ({ ...anterior, respostaCorreta: chave }));
+  // Define o índice da resposta correta (0, 1, 2 ou 3)
+  const selecionarCorreta = (index) => {
+    setDadosPergunta(anterior => ({ ...anterior, respostaCorreta: index }));
   };
 
   const lidarComSalvamento = () => {
-    if (!dadosPergunta.texto) {
+    if (!dadosPergunta.pergunta) {
       alert("Por favor, escreva o texto da pergunta.");
       return;
     }
-    if (!dadosPergunta.respostaCorreta) {
+    // Verifica se alguma opção está vazia
+    if (dadosPergunta.opcoes.some(opt => opt.trim() === '')) {
+      alert("Por favor, preencha todas as 4 opções.");
+      return;
+    }
+    // Verifica se respostaCorreta é um número (0 inclui false em boolean check simples, então checamos null)
+    if (dadosPergunta.respostaCorreta === null) {
       alert("Por favor, selecione qual é a alternativa correta.");
       return;
     }
+
     if (onSalvar) {
+      // Envia o objeto EXATAMENTE como você pediu
       onSalvar(dadosPergunta); 
     }
   };
   
-  // Define o Título e o Botão baseado se é edição ou criação
   const tituloTela = dadosEdicao ? "Editar Pergunta" : "Criar Nova Pergunta";
   const textoBotao = dadosEdicao ? "Salvar Alterações" : "Salvar Pergunta";
 
@@ -85,35 +100,38 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
       <div className="space-y-6">
         {/* Campo de Texto */}
         <div>
-          <label htmlFor="textoPergunta" className={estiloLabel}>Texto da Pergunta</label>
+          <label htmlFor="pergunta" className={estiloLabel}>Texto da Pergunta</label>
           <textarea
-            id="textoPergunta"
-            name="texto"
+            id="pergunta"
+            name="pergunta"
             placeholder="Digite a pergunta aqui..."
             className={`${estiloInput} h-24 resize-none`}
-            value={dadosPergunta.texto}
+            value={dadosPergunta.pergunta}
             onChange={lidarComMudanca}
           />
         </div>
 
-        {/* Opções de Resposta */}
+        {/* Opções de Resposta (Mapeando o Array) */}
         <div>
           <p className={estiloLabel}>Opções de Resposta <span className="text-xs text-gray-500 ml-2">(Clique na bolinha para marcar a correta)</span></p>
-          {Object.keys(dadosPergunta.opcoes).map((chave) => (
-            <div key={chave} className="flex items-center space-x-4 mb-3">
+          
+          {dadosPergunta.opcoes.map((opcao, index) => (
+            <div key={index} className="flex items-center space-x-4 mb-3">
+              {/* Radio Button usa o INDEX como valor de controle */}
               <input 
                 type="radio" 
-                name="opcaoCorreta" 
+                name="respostaCorreta" 
                 className="form-radio h-5 w-5 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 cursor-pointer focus:ring-blue-500"
-                checked={dadosPergunta.respostaCorreta === chave}
-                onChange={() => selecionarCorreta(chave)}
+                checked={dadosPergunta.respostaCorreta === index}
+                onChange={() => selecionarCorreta(index)}
               /> 
+              
               <input
                 type="text"
-                placeholder={`Opção ${chave}`}
+                placeholder={`Opção ${index + 1}`}
                 className={estiloInput}
-                value={dadosPergunta.opcoes[chave]}
-                onChange={(e) => lidarComMudancaOpcao(chave, e.target.value)}
+                value={opcao}
+                onChange={(e) => lidarComMudancaOpcao(index, e.target.value)}
               />
             </div>
           ))}
