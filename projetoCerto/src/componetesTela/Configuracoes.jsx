@@ -2,44 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { useQuiz } from './QuizContext';
 
 const Configuracoes = () => {
-  // 1. Pegamos o estado OFICIAL do contexto (apenas leitura inicial)
   const { tema, idioma, t, salvarConfiguracoes } = useQuiz();
 
-  // 2. Criamos estado LOCAL para o formulário (Rascunho)
   const [temaSelecionado, setTemaSelecionado] = useState(tema);
   const [idiomaSelecionado, setIdiomaSelecionado] = useState(idioma);
 
-  // Sincroniza o local se o global mudar externamente (opcional, boa prática)
   useEffect(() => {
     setTemaSelecionado(tema);
     setIdiomaSelecionado(idioma);
   }, [tema, idioma]);
 
   const lidarComSalvar = () => {
-    // 3. Envia os dados locais para virarem oficiais
     salvarConfiguracoes(temaSelecionado, idiomaSelecionado);
   };
 
   const lidarComExcluirConta = () => {
+    // Mantém o confirm para segurança, mas remove o alert de sucesso
     if (window.confirm(t('config_excluir_desc'))) {
-      alert("Conta excluída.");
+      console.log("Conta excluída (mock)."); 
     }
   };
 
-  // Verifica se o rascunho é diferente do oficial para mostrar o botão
   const haAlteracoes = temaSelecionado !== tema || idiomaSelecionado !== idioma;
 
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-white rounded-xl p-6 min-h-full relative transition-colors duration-300">
       <h2 className="text-3xl font-bold mb-8">{t('config_titulo')}</h2>
 
-      {/* --- Seção 1: Preferências --- */}
       <section className="mb-10">
         <h3 className="text-xl font-semibold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
           {t('config_pref_app')}
         </h3>
 
-        {/* Item: Tema */}
         <div className="flex justify-between items-center mb-6">
           <div className="max-w-md">
             <label className="font-medium text-lg">{t('config_tema')}</label>
@@ -47,7 +41,6 @@ const Configuracoes = () => {
           </div>
           <div className="w-64">
             <select
-              // Liga ao estado LOCAL
               value={temaSelecionado} 
               onChange={(e) => setTemaSelecionado(e.target.value)}
               className="w-full p-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
@@ -58,7 +51,6 @@ const Configuracoes = () => {
           </div>
         </div>
 
-        {/* Item: Idioma */}
         <div className="flex justify-between items-center">
           <div className="max-w-md">
             <label className="font-medium text-lg">{t('config_idioma')}</label>
@@ -66,7 +58,6 @@ const Configuracoes = () => {
           </div>
           <div className="w-64">
             <select
-              // Liga ao estado LOCAL
               value={idiomaSelecionado}
               onChange={(e) => setIdiomaSelecionado(e.target.value)}
               className="w-full p-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
@@ -78,7 +69,6 @@ const Configuracoes = () => {
         </div>
       </section>
 
-      {/* --- Seção 2: Conta --- */}
       <section className="mb-10">
         <h3 className="text-xl font-semibold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
           {t('config_conta')}
@@ -112,8 +102,6 @@ const Configuracoes = () => {
         </div>
       </section>
 
-      {/* --- Footer: Botão Salvar --- */}
-      {/* Só aparece se o local for diferente do oficial */}
       {haAlteracoes && (
         <div className="flex justify-end border-t border-gray-200 dark:border-gray-700 pt-6 mt-10 animate-fade-in-up">
           <button 

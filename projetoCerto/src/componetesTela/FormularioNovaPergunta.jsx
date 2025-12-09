@@ -5,38 +5,33 @@ const estiloInput = "w-full p-3 bg-gray-100 dark:bg-gray-700 border border-gray-
 const estiloLabel = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2";
 
 const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
-  const { t } = useQuiz();
+  const { t } = useQuiz(); // Hook de tradução
   
-  // O ESTADO AGORA SEGUE EXATAMENTE O FORMATO QUE VOCÊ PEDIU
   const [dadosPergunta, setDadosPergunta] = useState({
     categoria: 'Filantrópicas',
     pergunta: '',
-    opcoes: ['', '', '', ''], // Array de 4 posições vazias
-    respostaCorreta: null,   // Será um número (índice 0, 1, 2 ou 3)
+    opcoes: ['', '', '', ''], 
+    respostaCorreta: null,   
     id: null
   });
 
-  // Efeito para carregar dados na Edição
   useEffect(() => {
     if (dadosEdicao) {
       setDadosPergunta({
         categoria: dadosEdicao.categoria,
         pergunta: dadosEdicao.pergunta,
-        // Garante que seja um array, se não for, cria um padrão
         opcoes: Array.isArray(dadosEdicao.opcoes) ? dadosEdicao.opcoes : ['', '', '', ''],
-        respostaCorreta: dadosEdicao.respostaCorreta, // Espera-se um número
+        respostaCorreta: dadosEdicao.respostaCorreta,
         id: dadosEdicao.id
       });
     }
   }, [dadosEdicao]);
 
-  // Atualiza texto da pergunta ou categoria
   const lidarComMudanca = (e) => {
     const { name, value } = e.target;
     setDadosPergunta(anterior => ({ ...anterior, [name]: value }));
   };
 
-  // Atualiza uma opção específica do Array pelo índice
   const lidarComMudancaOpcao = (index, valor) => {
     const novasOpcoes = [...dadosPergunta.opcoes];
     novasOpcoes[index] = valor;
@@ -47,35 +42,33 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
     }));
   };
 
-  // Define o índice da resposta correta (0, 1, 2 ou 3)
   const selecionarCorreta = (index) => {
     setDadosPergunta(anterior => ({ ...anterior, respostaCorreta: index }));
   };
 
   const lidarComSalvamento = () => {
+    // Alertas Traduzidos
     if (!dadosPergunta.pergunta) {
-      alert("Por favor, escreva o texto da pergunta.");
+      alert(t('alert_erro_texto'));
       return;
     }
-    // Verifica se alguma opção está vazia
     if (dadosPergunta.opcoes.some(opt => opt.trim() === '')) {
-      alert("Por favor, preencha todas as 4 opções.");
+      alert(t('alert_erro_opcoes'));
       return;
     }
-    // Verifica se respostaCorreta é um número (0 inclui false em boolean check simples, então checamos null)
     if (dadosPergunta.respostaCorreta === null) {
-      alert("Por favor, selecione qual é a alternativa correta.");
+      alert(t('alert_erro_correta'));
       return;
     }
 
     if (onSalvar) {
-      // Envia o objeto EXATAMENTE como você pediu
       onSalvar(dadosPergunta); 
     }
   };
   
-  const tituloTela = dadosEdicao ? "Editar Pergunta" : "Criar Nova Pergunta";
-  const textoBotao = dadosEdicao ? "Salvar Alterações" : "Salvar Pergunta";
+  // Títulos Traduzidos
+  const tituloTela = dadosEdicao ? t('form_titulo_editar') : t('form_titulo_criar');
+  const textoBotao = dadosEdicao ? t('form_btn_salvar_editar') : t('form_btn_salvar_criar');
 
   return (
     <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl transition-colors duration-300">
@@ -86,7 +79,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
             onClick={onCancelar}
             className="px-4 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition duration-150"
           >
-            Cancelar
+            {t('btn_cancelar')}
           </button>
           <button 
             onClick={lidarComSalvamento}
@@ -98,26 +91,25 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
       </header>
 
       <div className="space-y-6">
-        {/* Campo de Texto */}
         <div>
-          <label htmlFor="pergunta" className={estiloLabel}>Texto da Pergunta</label>
+          <label htmlFor="pergunta" className={estiloLabel}>{t('label_texto')}</label>
           <textarea
             id="pergunta"
             name="pergunta"
-            placeholder="Digite a pergunta aqui..."
+            placeholder={t('placeholder_texto')}
             className={`${estiloInput} h-24 resize-none`}
             value={dadosPergunta.pergunta}
             onChange={lidarComMudanca}
           />
         </div>
 
-        {/* Opções de Resposta (Mapeando o Array) */}
         <div>
-          <p className={estiloLabel}>Opções de Resposta <span className="text-xs text-gray-500 ml-2">(Clique na bolinha para marcar a correta)</span></p>
+          <p className={estiloLabel}>
+            {t('label_opcoes')} <span className="text-xs text-gray-500 ml-2">{t('label_opcoes_sub')}</span>
+          </p>
           
           {dadosPergunta.opcoes.map((opcao, index) => (
             <div key={index} className="flex items-center space-x-4 mb-3">
-              {/* Radio Button usa o INDEX como valor de controle */}
               <input 
                 type="radio" 
                 name="respostaCorreta" 
@@ -128,7 +120,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
               
               <input
                 type="text"
-                placeholder={`Opção ${index + 1}`}
+                placeholder={`${t('placeholder_opcao')} ${index + 1}`}
                 className={estiloInput}
                 value={opcao}
                 onChange={(e) => lidarComMudancaOpcao(index, e.target.value)}
@@ -137,9 +129,8 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
           ))}
         </div>
 
-        {/* Categorias */}
         <div>
-          <label htmlFor="categoria" className={estiloLabel}>Categoria</label>
+          <label htmlFor="categoria" className={estiloLabel}>{t('label_categoria')}</label>
           <select
             id="categoria"
             name="categoria"
@@ -147,10 +138,11 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
             value={dadosPergunta.categoria}
             onChange={lidarComMudanca}
           >
-            <option value="Filantrópicas">Filantrópicas</option>
-            <option value="Esportivas">Esportivas</option>
-            <option value="Recreativas">Recreativas</option>
-            <option value="Culturais">Culturais</option>
+            {/* O value vai para o banco (fixo), o Texto exibido é traduzido */}
+            <option value="Filantrópicas">{t('cat_filantropicas')}</option>
+            <option value="Esportivas">{t('cat_esportivas')}</option>
+            <option value="Recreativas">{t('cat_recreativas')}</option>
+            <option value="Culturais">{t('cat_culturais')}</option>
           </select>
         </div>
       </div>
