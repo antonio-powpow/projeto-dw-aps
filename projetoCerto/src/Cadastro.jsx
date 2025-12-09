@@ -65,12 +65,25 @@ export default function Cadastro() {
 
                     {/* Botão */}
                     <div className="mt-6 flex w-full flex-col items-center gap-4">
-                        <button onClick={categoria} className="flex h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-primary text-base font-bold text-white transition-colors hover:bg-primary/90">
+                        {/* ADICIONADO type="button" AQUI TAMBÉM PARA PREVENIR RELOAD AO REGISTRAR */}
+                        <button 
+                            type="button" 
+                            onClick={categoria} 
+                            className="flex h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-primary text-base font-bold text-white transition-colors hover:bg-primary/90"
+                        >
                             {t('cadastro_btn_registrar')}
                         </button>
+                        
                         <p className="text-base font-normal text-gray-500 dark:text-[#9da6b9]">
                             {t('cadastro_tem_conta')}{" "}
-                             <button onClick={login} className="hover:underline font-bold underline hover:text-primary">{t('cadastro_faca_login')}</button>
+                             {/* ADICIONADO type="button" AQUI (Correção Principal) */}
+                             <button 
+                                type="button" 
+                                onClick={login} 
+                                className="hover:underline font-bold underline hover:text-primary"
+                             >
+                                {t('cadastro_faca_login')}
+                             </button>
                         </p>
                     </div>
                 </form>
