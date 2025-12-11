@@ -5,7 +5,7 @@ const estiloInput = "w-full p-3 bg-gray-100 dark:bg-gray-700 border border-gray-
 const estiloLabel = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2";
 
 const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
-  const { t } = useQuiz(); // Hook de tradução
+  const { t } = useQuiz();
   
   const [dadosPergunta, setDadosPergunta] = useState({
     categoria: 'Filantrópicas',
@@ -15,13 +15,16 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
     id: null
   });
 
+  // EFEITO: Carrega os dados quando for Edição
   useEffect(() => {
     if (dadosEdicao) {
       setDadosPergunta({
         categoria: dadosEdicao.categoria,
         pergunta: dadosEdicao.pergunta,
+        // Garante que opções seja um array
         opcoes: Array.isArray(dadosEdicao.opcoes) ? dadosEdicao.opcoes : ['', '', '', ''],
-        respostaCorreta: dadosEdicao.respostaCorreta,
+        // CORREÇÃO ESSENCIAL: Converte para número para o rádio funcionar
+        respostaCorreta: Number(dadosEdicao.respostaCorreta), 
         id: dadosEdicao.id
       });
     }
@@ -47,7 +50,6 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
   };
 
   const lidarComSalvamento = () => {
-    // Alertas Traduzidos
     if (!dadosPergunta.pergunta) {
       alert(t('alert_erro_texto'));
       return;
@@ -56,7 +58,8 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
       alert(t('alert_erro_opcoes'));
       return;
     }
-    if (dadosPergunta.respostaCorreta === null) {
+    // Verifica se respostaCorreta é válida (0 é válido, null/undefined não)
+    if (dadosPergunta.respostaCorreta === null || dadosPergunta.respostaCorreta === undefined) {
       alert(t('alert_erro_correta'));
       return;
     }
@@ -66,7 +69,6 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
     }
   };
   
-  // Títulos Traduzidos
   const tituloTela = dadosEdicao ? t('form_titulo_editar') : t('form_titulo_criar');
   const textoBotao = dadosEdicao ? t('form_btn_salvar_editar') : t('form_btn_salvar_criar');
 
@@ -91,6 +93,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
       </header>
 
       <div className="space-y-6">
+        {/* Campo de Texto */}
         <div>
           <label htmlFor="pergunta" className={estiloLabel}>{t('label_texto')}</label>
           <textarea
@@ -103,6 +106,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
           />
         </div>
 
+        {/* Opções de Resposta */}
         <div>
           <p className={estiloLabel}>
             {t('label_opcoes')} <span className="text-xs text-gray-500 ml-2">{t('label_opcoes_sub')}</span>
@@ -114,6 +118,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
                 type="radio" 
                 name="respostaCorreta" 
                 className="form-radio h-5 w-5 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 cursor-pointer focus:ring-blue-500"
+                // AQUI OCORRE A COMPARAÇÃO (Ambos agora são números)
                 checked={dadosPergunta.respostaCorreta === index}
                 onChange={() => selecionarCorreta(index)}
               /> 
@@ -129,6 +134,7 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
           ))}
         </div>
 
+        {/* Categorias */}
         <div>
           <label htmlFor="categoria" className={estiloLabel}>{t('label_categoria')}</label>
           <select
@@ -138,7 +144,6 @@ const FormularioNovaPergunta = ({ onCancelar, onSalvar, dadosEdicao }) => {
             value={dadosPergunta.categoria}
             onChange={lidarComMudanca}
           >
-            {/* O value vai para o banco (fixo), o Texto exibido é traduzido */}
             <option value="Filantrópicas">{t('cat_filantropicas')}</option>
             <option value="Esportivas">{t('cat_esportivas')}</option>
             <option value="Recreativas">{t('cat_recreativas')}</option>
