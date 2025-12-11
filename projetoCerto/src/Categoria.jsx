@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "./supabaseClient";
-import { useQuiz } from "./componetesTela/QuizContext"; // 1. Importar o contexto
+import { useQuiz } from "./componetesTela/QuizContext";
 
 export default function Categoria() {
-  const { t } = useQuiz(); // 2. Usar o hook de tradução
+  const { t } = useQuiz();
   const [selected, setSelected] = useState(null);
   const [perguntasDoBanco, setPerguntasDoBanco] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export default function Categoria() {
   
   const navigate = useNavigate();
 
-  // Buscar perguntas do Supabase
+  // --- BUSCA E CONVERSÃO DOS DADOS ---
   useEffect(() => {
     async function fetchPerguntas() {
       setLoading(true);
@@ -26,7 +26,8 @@ export default function Categoria() {
       } else {
         const perguntasFormatadas = data.map(p => ({
           ...p,
-          respostaCorreta: p.resposta_correta
+          // --- CORREÇÃO AQUI: Força a conversão para NÚMERO ---
+          respostaCorreta: Number(p.resposta_correta) 
         }));
         setPerguntasDoBanco(perguntasFormatadas);
       }
@@ -49,7 +50,7 @@ export default function Categoria() {
     const selecionadas = sortearPerguntasPorCategoria(categoria);
     
     if (selecionadas.length === 0) {
-      alert(t('cat_vazia_erro')); // Traduzido
+      alert(t('cat_vazia_erro'));
       return;
     }
 
@@ -77,7 +78,7 @@ export default function Categoria() {
   function login() { navigate("/"); }
   function usuario() { navigate("/usuario"); }
 
-  // Estilos (adaptados para Dark/Light mode)
+  // Estilos
   const baseCard = "flex flex-1 flex-col gap-4 rounded-lg border p-6 transition-all cursor-pointer bg-white dark:bg-white/5 shadow-sm dark:shadow-none backdrop-blur-sm";
   const normalBorder = "border-gray-200 dark:border-white/5 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1";
   const selectedBorder = "border-primary shadow-lg ring-2 ring-primary/60 scale-[1.03]";
@@ -122,59 +123,46 @@ export default function Categoria() {
           <div className={`flex flex-col items-center gap-10 w-full transform transition-all duration-300 ease-out ${containerAnim}`}>
             <div className="flex flex-col items-center gap-2">
               <h1 className="tracking-tight text-4xl sm:text-5xl font-bold leading-tight text-center">
-                {t('cat_titulo')} {/* Traduzido */}
+                {t('cat_titulo')}
               </h1>
               <p className="text-gray-600 dark:text-gray-300 text-base font-normal leading-normal text-center max-w-md">
-                {t('cat_subtitulo')} {/* Traduzido */}
+                {t('cat_subtitulo')}
               </p>
             </div>
 
             <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 p-4">
-              
-              {/* Filantrópicas */}
+              {/* Categorias */}
               <button type="button" onClick={() => handleSelecionar("Filantrópicas")} className={getCardClasses("Filantrópicas")}>
-                <div className="text-orange-500 dark:text-orange-400">
-                  <span className="material-symbols-outlined text-4xl">volunteer_activism</span>
-                </div>
+                <div className="text-orange-500 dark:text-orange-400"><span className="material-symbols-outlined text-4xl">volunteer_activism</span></div>
                 <div className="flex flex-col gap-1 text-left">
-                  <h2 className="text-lg font-bold">{t('cat_filantropicas')}</h2> {/* Traduzido */}
-                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_filantropicas_desc')}</p> {/* Traduzido */}
+                  <h2 className="text-lg font-bold">{t('cat_filantropicas')}</h2>
+                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_filantropicas_desc')}</p>
                 </div>
               </button>
 
-              {/* Recreativas */}
               <button type="button" onClick={() => handleSelecionar("Recreativas")} className={getCardClasses("Recreativas")}>
-                <div className="text-teal-500 dark:text-teal-400">
-                  <span className="material-symbols-outlined text-4xl">toys</span>
-                </div>
+                <div className="text-teal-500 dark:text-teal-400"><span className="material-symbols-outlined text-4xl">toys</span></div>
                 <div className="flex flex-col gap-1 text-left">
-                  <h2 className="text-lg font-bold">{t('cat_recreativas')}</h2> {/* Traduzido */}
-                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_recreativas_desc')}</p> {/* Traduzido */}
+                  <h2 className="text-lg font-bold">{t('cat_recreativas')}</h2>
+                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_recreativas_desc')}</p>
                 </div>
               </button>
 
-              {/* Esportivas */}
               <button type="button" onClick={() => handleSelecionar("Esportivas")} className={getCardClasses("Esportivas")}>
-                <div className="text-red-500 dark:text-red-400">
-                  <span className="material-symbols-outlined text-4xl">trophy</span>
-                </div>
+                <div className="text-red-500 dark:text-red-400"><span className="material-symbols-outlined text-4xl">trophy</span></div>
                 <div className="flex flex-col gap-1 text-left">
-                  <h2 className="text-lg font-bold">{t('cat_esportivas')}</h2> {/* Traduzido */}
-                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_esportivas_desc')}</p> {/* Traduzido */}
+                  <h2 className="text-lg font-bold">{t('cat_esportivas')}</h2>
+                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_esportivas_desc')}</p>
                 </div>
               </button>
 
-              {/* Culturais */}
               <button type="button" onClick={() => handleSelecionar("Culturais")} className={getCardClasses("Culturais")}>
-                <div className="text-indigo-500 dark:text-indigo-400">
-                  <span className="material-symbols-outlined text-4xl">theater_comedy</span>
-                </div>
+                <div className="text-indigo-500 dark:text-indigo-400"><span className="material-symbols-outlined text-4xl">theater_comedy</span></div>
                 <div className="flex flex-col gap-1 text-left">
-                  <h2 className="text-lg font-bold">{t('cat_culturais')}</h2> {/* Traduzido */}
-                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_culturais_desc')}</p> {/* Traduzido */}
+                  <h2 className="text-lg font-bold">{t('cat_culturais')}</h2>
+                  <p className="text-gray-500 dark:text-gray-300 text-sm">{t('cat_culturais_desc')}</p>
                 </div>
               </button>
-
             </div>
           </div>
         </main>
