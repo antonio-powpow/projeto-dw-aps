@@ -27,16 +27,7 @@ const BarraLateral = ({ telaAtual, aoNavegar }) => {
     // Adicionei 'bg-white dark:bg-gray-800' para suportar troca de tema
     <div className="w-64 flex flex-col justify-between bg-white dark:bg-gray-800 p-6 shadow-2xl transition-colors duration-300">
       <div>
-        <div className="flex items-center mb-10">
-          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg text-white mr-3">
-            A
-          </div>
-          <div>
-            {/* Texto escuro no modo claro, branco no modo escuro */}
-            <p className="text-gray-800 dark:text-white font-semibold">Administrador</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Quiz Manager</p>
-          </div>
-        </div>
+        
 
         <nav className="space-y-2">
           {itensMenu.map((item) => (
