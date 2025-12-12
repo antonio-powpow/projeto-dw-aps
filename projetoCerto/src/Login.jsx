@@ -71,9 +71,10 @@ export default function Login() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/categoria`, // Redireciona para /home após login
+          redirectTo: "https://utfpr-quiz.vercel.app/categoria", // produção
         },
       });
+  
 
       if (error) {
         // Caso o email já exista no Supabase (senha cadastrada)
