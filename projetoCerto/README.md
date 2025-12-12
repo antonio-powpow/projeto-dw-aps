@@ -96,5 +96,5 @@ Antes de começar, você precisa ter instalado em sua máquina:
 Para que a conexão com o banco de dados funcione, você deve criar um arquivo `.env` na raiz do projeto com as seguintes chaves do Supabase:
 
 ```env
-VITE_SUPABASE_URL=sua_url_do_supabase_aqui
+VITE_SUPABASE_URL=sua_url_do_supabse_aqui
 VITE_SUPABASE_ANON_KEY=sua_chave_anonima_aqui
