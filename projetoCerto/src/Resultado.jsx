@@ -138,7 +138,6 @@ export default function Resultado() {
         <header className="w-full max-w-6xl flex items-center justify-between whitespace-nowrap py-2 mb-6 border-b border-gray-200 dark:border-white/10">
           <div className="flex items-center gap-3 text-gray-800 dark:text-white">
             <div
-              onClick={login}
               className="w-10 h-10 md:w-14 md:h-14 cursor-pointer"
             >
               <img

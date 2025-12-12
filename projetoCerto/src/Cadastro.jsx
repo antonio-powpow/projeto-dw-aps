@@ -69,7 +69,7 @@ export default function Cadastro() {
                 Swal.fire({
                     icon: "success",
                     title: "Cadastro realizado!",
-                    text: "Enviamos um link de confirmação para o seu e-mail.",
+                    text: "",
                     timer: 2500,
                     showConfirmButton: false,
                 });

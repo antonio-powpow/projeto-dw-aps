@@ -87,7 +87,7 @@ export default function Perguntas() {
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4">
-              <div onClick={login} className="size-14 text-primary cursor-pointer"><img src="/quiz.png" alt="Quiz UTFPR" className="w-full h-auto" /></div>
+              <div  className="size-14 text-primary cursor-pointer"><img src="/quiz.png" alt="Quiz UTFPR" className="w-full h-auto" /></div>
               <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Quiz UTFPR</h2>
             </div>
             <div onClick={usuario} className="hidden sm:flex items-center gap-9 cursor-pointer">

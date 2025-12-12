@@ -76,6 +76,7 @@ export default function Categoria() {
   }, [animatingCenter, selected, perguntasSelecionadas, navigate]);
 
   function login() { navigate("/"); }
+  function categoria() { navigate("/categoria"); }  
   function usuario() { navigate("/usuario"); }
 
   // Estilos
@@ -106,7 +107,7 @@ export default function Categoria() {
         <div className="w-full max-w-5xl">
           <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200 dark:border-white/10 px-6 sm:px-10 py-4">
             <div className="flex items-center gap-4 text-gray-800 dark:text-white">
-              <div onClick={login} className="size-14 text-primary cursor-pointer">
+              <div  className="size-14 text-primary cursor-pointer">
                 <img src="/quiz.png" alt="Quiz UTFPR" className="w-full h-auto" />
               </div>
               <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Quiz UTFPR</h2>
