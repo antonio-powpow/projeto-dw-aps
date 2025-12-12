@@ -1,32 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuiz } from "./componetesTela/QuizContext"; // Importar hook
-import { supabase } from "./supabaseClient"; // Importar cliente Supabase
-import Swal from "sweetalert2"; // Importar SweetAlert2
+import { useQuiz } from "./componetesTela/QuizContext";
+import { supabase } from "./supabaseClient";
+import Swal from "sweetalert2";
 
 export default function Login() {
-  const { t } = useQuiz(); // Usar tradução
+  const { t } = useQuiz();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
 
-  function cadastro() {
+  const cadastro = useCallback(() => {
     navigate("/cadastro");
-  }
+  }, [navigate]);
 
-  function categoria() {
+  const categoria = useCallback(() => {
     navigate("/categoria");
-  }
+  }, [navigate]);
 
   // Verifica se o usuário já está logado ao abrir a página
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session){categoria};
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        categoria(); // aqui AGORA está chamando a função
+      }
     };
+
     checkSession();
-  }, [navigate]);
+  }, [categoria]);
 
   // Login com email e senha
   const handleSignIn = async () => {
@@ -35,13 +40,12 @@ export default function Login() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password: senha,
     });
 
     if (error) {
-      // Verifica se o erro é de credenciais inválidas
       if (error.message.includes("Invalid login credentials")) {
         Swal.fire(
           "Erro",
@@ -53,23 +57,22 @@ export default function Login() {
       }
     } else {
       Swal.fire("Sucesso", "Login realizado!", "success");
-      // Redireciona para a página inicial após login bem-sucedido
-      setTimeout(() => (categoria()), 1500);
+      setTimeout(() => categoria(), 1500);
     }
   };
 
   // Login com Google
   const handleSignInWithGoogle = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/categoria`, // Redireciona para /home após login
+          // em produção, isso será algo como https://seu-app.vercel.app/categoria
+          redirectTo: `${window.location.origin}/categoria`,
         },
       });
 
       if (error) {
-        // Caso o email já exista no Supabase (senha cadastrada)
         if (
           error.message.includes("already registered") ||
           error.message.includes("user already exists")
@@ -80,7 +83,6 @@ export default function Login() {
             text: "Este email já está registrado com outro método de login. Tente entrar com sua senha ou redefina sua senha.",
           });
         } else {
-          // Outros erros do Supabase
           Swal.fire({
             icon: "error",
             title: "Erro ao entrar com Google",
@@ -88,7 +90,6 @@ export default function Login() {
           });
         }
       } else {
-        // Sucesso: o Supabase redireciona automaticamente
         Swal.fire({
           icon: "success",
           title: "Acessando com Google",
