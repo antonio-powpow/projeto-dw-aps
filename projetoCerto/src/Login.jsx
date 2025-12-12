@@ -22,11 +22,18 @@ export default function Login() {
   // Verifica se o usuário já está logado ao abrir a página
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session){categoria};
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        categoria(); // chama a função que navega para /categoria
+      }
     };
+
     checkSession();
   }, [navigate]);
+
 
   // Login com email e senha
   const handleSignIn = async () => {
